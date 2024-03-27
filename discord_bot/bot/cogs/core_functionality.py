@@ -24,12 +24,13 @@ class core_functionality(commands.Cog):
         embed.add_field(name = "Ping!", value= f'Bot latency is {bot_latency} ms.' ,inline = False)
         embed.set_footer(text =f'Requested by {ctx.author}', icon_url=ctx.author.avatar.url)
         await ctx.send(embed = embed)
+        
 
     #Displays information about the bot."""
     @commands.command()
     async def info(self, ctx):
         try:
-            embed = discord.Embed(title=f"{self.bot.user.name}", color=discord.Color.blue())
+            embed = discord.Embed(title=f"{self.bot.user.name}", color=0x00FFFF)
             embed.add_field(name="Developed By ❄️", value="Devendra", inline=False)
             embed.add_field(name="Server Count ❄️", value=len(self.bot.guilds), inline=True)
             embed.add_field(name="User Count ❄️", value=len(set(self.bot.get_all_members())), inline=True)
@@ -55,7 +56,7 @@ class core_functionality(commands.Cog):
             categories = len(server.categories)
             roles = len(server.roles)
 
-            embed = discord.Embed(title=f"{server.name}", color=discord.Color.blue())
+            embed = discord.Embed(title=f"{server.name}", color=0x00FFFF)
             embed.set_thumbnail(url = self.bot.user.avatar.url)
             embed.add_field(name="Server ID 🆔", value=server.id, inline=True)
             embed.add_field(name="Created at 📍", value=server_created_at, inline=True)
@@ -99,6 +100,55 @@ class core_functionality(commands.Cog):
     async def invite(self, ctx):
         invite = await ctx.channel.create_invite(max_age=86400, max_uses=0)
         await ctx.send(f"Invite link: {invite}")
-         
+
+ 
+        #whois command
+    @commands.command(name='whois', aliases=['userinfo'])
+    async def whois(self, ctx, member: discord.Member = None):
+        """Shows information about a member."""
+        member = member or ctx.author
+        embed = discord.Embed(title=f'User Information - {member}', color=0x00FFFF)
+        embed.set_thumbnail(url=member.avatar.url)
+        embed.add_field(name='ID', value=member.id, inline=True)
+        embed.add_field(name='Display Name', value=member.display_name, inline=True)
+        embed.add_field(name='Joined Server', value=member.joined_at.strftime('%Y-%m-%d'), inline=True)
+        embed.add_field(name='Joined Discord', value=member.created_at.strftime('%Y-%m-%d'), inline=True)
+        embed.add_field(name='Roles', value=', '.join(r.mention for r in member.roles[1:]), inline=False)
+        embed.set_footer(text =f'Requested by {ctx.author}', icon_url=ctx.author.avatar.url)
+        await ctx.send(embed=embed)
+       
+    #whois error handler: 
+    @whois.error
+    async def whois_error(self,ctx,error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send("You don't have permission to acess this command.")
+        elif isinstance(error, commands.BadArgument):
+            await ctx.send("Invalid member mentioned.")
+        else:
+            await ctx.send(f"An error occurred: {error}")
+ 
+ 
+    #avatar command
+    @commands.command(name='avatar')
+    async def avatar(self, ctx, member: discord.Member = None):
+        """Shows a member's avatar."""
+        member = member or ctx.author
+        embed = discord.Embed(color=0x00FFFF)
+        embed.set_thumbnail(url = self.bot.user.avatar.url)
+        embed.set_image(url=member.avatar.url)
+        embed.set_footer(text=f'Requested by {ctx.author}', icon_url=ctx.author.avatar.url)
+        await ctx.send(embed=embed)
+        
+    #avatar error handler: 
+    @avatar.error
+    async def avatar_error(self,ctx,error):
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send("You don't have permission to acess this command.")
+        elif isinstance(error, commands.BadArgument):
+            await ctx.send("Invalid member mentioned.")
+        else:
+            await ctx.send(f"An error occurred: {error}")
+
+
 async def setup(bot):
     await bot.add_cog(core_functionality(bot))
