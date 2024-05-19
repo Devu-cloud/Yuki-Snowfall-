@@ -119,7 +119,7 @@ class server_defination(commands.Cog):
             
     #set_servername command error handler
     @set_server_name.error
-    async def set_servername_error(self, ctx, error):
+    async def set_server_name_error(self, ctx, error):
         if isinstance(error, commands.BadArgument):
             await ctx.send("Invalid name specified.")
         elif isinstance(error, commands.MissingPermissions):

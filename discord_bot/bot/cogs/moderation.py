@@ -10,7 +10,7 @@ class moderation(commands.Cog):
     async def on_ready(self):
       print(f"moderation Cog is ready:")
       
-        #command to remove a user from the server
+    #command to remove a user from the server
     @commands.command(aliases= ["yuki_kick"])
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):

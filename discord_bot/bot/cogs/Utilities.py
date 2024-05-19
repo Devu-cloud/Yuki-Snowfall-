@@ -19,7 +19,7 @@ class Utilities(commands.Cog):
     async def setup(self, ctx):
         await ctx.send("Use `!setup enable_logging` or `!setup enable_welcome` to configure logging or welcome messages.")
 
-    @setup.command(name="enable_logging")  # Renamed the command
+    @setup.command(name="enable_logging")  
     @commands.has_guild_permissions(administrator=True)
     async def setup_log(self, ctx):
         guild = ctx.guild
@@ -38,7 +38,6 @@ class Utilities(commands.Cog):
             await ctx.send(embed=embed)
             await ctx.send("`server_logs` channel already exists. Use `!setup disable_logging` to disable it, or delete the channel manually.")
             return
-
         
         permissions = discord.Permissions()
         permissions.read_messages = False  # No read access for @everyone
@@ -261,11 +260,9 @@ class Utilities(commands.Cog):
         print(f"Member joined: {member.name}")
         guild = member.guild
         guildname = guild.name
-
         # Add this check to ensure the event is only handled once
         if member.bot:
             return  # Ignore bots
-
     
         try:
             # Try sending DM
@@ -279,7 +276,6 @@ class Utilities(commands.Cog):
             embed.set_thumbnail(url=member.avatar.url)
             embed.set_image(url=self.bot.user.avatar.url)
             await dmchannel.send(embed=embed)
-
             # DM send succeeded, send welcome channel message if configured
             if self.welcome_channel:
                     print("Sending welcome text...")
@@ -295,29 +291,7 @@ class Utilities(commands.Cog):
 
         except Exception as e:
          print(f"An error has occurred {e}, cannot send DM to the user.")
-
-    @commands.Cog.listener()
-    async def on_message(self,message):
-            can_delete_message = True
-            
-            if message.author == self.bot.user and message.channel == self.welcome_channel and message !=self.last_welcome_message:
-                if can_delete_message:
-                    await message.async_delete()
-                    can_delete_message=False
-                    print(f"Deleted duplicate message from {message.channel.name}")
-                else:
-                    can_delete_message=True
-                    await asyncio.sleep(0.1)
-                    
-            elif message.author ==self.bot.user and message.guild is None and message != self.last_dm_message:
-                if can_delete_message:
-                    await message.async_delete()
-                    can_delete_message=False
-                    print("Deleted duplicate message from welcome DM")
-                else:
-                    can_delete_message=True
-                    await asyncio.sleep(0.1)
-                    
+                 
     
     @commands.Cog.listener()
     async def on_member_remove(self,member):

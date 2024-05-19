@@ -14,7 +14,7 @@ class core_functionality(commands.Cog):
       
       
     #ping command
-    @commands.command()
+    @commands.command(aliases=['yuki_ping'])
     async def ping(self, ctx):
         """Sends a 'Pong!' message to test the bot's responsiveness."""
         bot_latency = round(self.bot.latency *1000)
@@ -27,7 +27,7 @@ class core_functionality(commands.Cog):
         
 
     #Displays information about the bot."""
-    @commands.command()
+    @commands.command(aliases= ["snowfall_info"])
     async def info(self, ctx):
         try:
             embed = discord.Embed(title=f"{self.bot.user.name}", color=0x00FFFF)
@@ -35,6 +35,7 @@ class core_functionality(commands.Cog):
             embed.add_field(name="Server Count ❄️", value=len(self.bot.guilds), inline=True)
             embed.add_field(name="User Count ❄️", value=len(set(self.bot.get_all_members())), inline=True)
             embed.set_thumbnail(url = self.bot.user.avatar.url)
+            embed.add_field(name="Need Help?", value="[join The Snowfall [降雪] Server!](https://discord.gg/tVQNHztWkB)",inline= False)
             embed.set_footer(text =f'Requested by {ctx.author}', icon_url=ctx.author.avatar.url)
             await ctx.send(embed=embed)
         
@@ -74,7 +75,7 @@ class core_functionality(commands.Cog):
         
         
     #Displays how long the bot has been running."""
-    @commands.command()
+    @commands.command(aliases= ["yuki_uptime"])
     async def uptime(self, ctx):
         try:
             uptime = datetime.now() - self.start_time
@@ -96,14 +97,14 @@ class core_functionality(commands.Cog):
             
        
     #Generates an invite link to the current server    
-    @commands.command()
+    @commands.command(aliases= ["yuki_invite"])
     async def invite(self, ctx):
         invite = await ctx.channel.create_invite(max_age=86400, max_uses=0)
         await ctx.send(f"Invite link: {invite}")
 
  
         #whois command
-    @commands.command(name='whois', aliases=['userinfo'])
+    @commands.command(name='whois', aliases=['yuki_userinfo'])
     async def whois(self, ctx, member: discord.Member = None):
         """Shows information about a member."""
         member = member or ctx.author
@@ -129,12 +130,11 @@ class core_functionality(commands.Cog):
  
  
     #avatar command
-    @commands.command(name='avatar')
+    @commands.command(name='avatar',aliases=['yuki_avatar'])
     async def avatar(self, ctx, member: discord.Member = None):
         """Shows a member's avatar."""
         member = member or ctx.author
         embed = discord.Embed(color=0x00FFFF)
-        embed.set_thumbnail(url = self.bot.user.avatar.url)
         embed.set_image(url=member.avatar.url)
         embed.set_footer(text=f'Requested by {ctx.author}', icon_url=ctx.author.avatar.url)
         await ctx.send(embed=embed)

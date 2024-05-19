@@ -57,7 +57,7 @@ class basic(commands.Cog):
 
               
     #rolldie command
-    @commands.command(name='roll')
+    @commands.command(name='roll',aliases= ["yuki_roll"])
     async def roll(self, ctx, dice: str):
         """Rolls a dice in the specified format.
 
@@ -83,7 +83,7 @@ class basic(commands.Cog):
             await ctx.send(f"An error occurred: {error}")
     
     #meme command
-    @commands.command()
+    @commands.command(aliases= ["yuki_meme"])
     async def meme(self, ctx):
         async with aiohttp.ClientSession() as session:
             async with session.get("https://www.reddit.com/r/memes/random/.json") as response:
@@ -110,7 +110,7 @@ class basic(commands.Cog):
             await ctx.send(f"An error has occurred {error}")
        
     #dankmeme command:     
-    @commands.command()
+    @commands.command(aliases= ["yuki_dankmeme"])
     @commands.has_role("Dank")
     async def dankmeme(self, ctx):
         """Fetches a random dank meme from Reddit."""
@@ -144,7 +144,7 @@ class basic(commands.Cog):
             await ctx.send(f"An error has occurred {error}")
             
     #fact command
-    @commands.command()
+    @commands.command(aliases= ["yuki_fact"])
     async def fact(self, ctx):
         try:
             response = requests.get("https://uselessfacts.jsph.pl/random.json?language=en")
@@ -166,7 +166,7 @@ class basic(commands.Cog):
             
 
     #quote command
-    @commands.command()
+    @commands.command(aliases= ["yuki_quote"])
     async def quote(self, ctx):
         """Sends a random quote."""
         try:
