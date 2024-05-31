@@ -1,0 +1,11 @@
+discord.py pip install discord
+pandas
+dotenv
+youtube-dl
+pynacl
+requests
+aiohttp
+google_generative_ai
+openai
+
+software -FFMPEG
